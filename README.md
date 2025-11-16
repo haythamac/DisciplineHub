@@ -1,6 +1,6 @@
 # Discipline Hub
 
-A simple personal tracker built with Vue and shadcn/ui.
+A simple personal tracker built with Laravel, Vue and shadcn/ui.
 
 ## Features
 - Expense Tracker
