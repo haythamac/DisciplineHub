@@ -11,3 +11,5 @@ A simple personal tracker built with Laravel, Vue and shadcn/ui.
 1. Clone the repo
 2. Run `npm install`
 3. Start the dev server with `npm run dev`
+
+

@@ -1,13 +1,30 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
 
 import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import Button from '@/components/ui/button/Button.vue';
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Check } from 'lucide-vue-next';
+
+const page = usePage();
+
+// table component
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table'
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,8 +34,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const form = useForm({
-  account: '',
-  amount: '',
+    account: '',
+    amount: '',
 })
 
 const handleSubmit = () => {
@@ -33,6 +50,16 @@ const handleSubmit = () => {
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div v-if="page.props.flash?.message" class="alert">
+                    <Alert class="bg-green-200 text-black">
+                        <Check color="#1f1f1f" />
+                        <AlertTitle>Successful</AlertTitle>
+                        <AlertDescription>
+                            {{ page.props.flash?.message }}
+                        </AlertDescription>
+                    </Alert>
+                </div>
+                <br />
             <div class="grid auto-rows-min gap-4 md:grid-cols-3">
                 <div
                     class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4">
@@ -49,8 +76,10 @@ const handleSubmit = () => {
             </div>
             <div
                 class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border p-4">
-                
+
                 <br />
+                
+
                 <form @submit.prevent="handleSubmit" class="w-4/12 space-y-6 p-4 border rounded-xl">
                     <h1>Add income to account</h1>
                     <!-- Account -->
@@ -65,9 +94,37 @@ const handleSubmit = () => {
                         <Input type="number" placeholder="500" name="amount" v-model="form.amount" />
                         <div class="text-sm text-red-600" v-if="form.errors.amount">{{ form.errors.amount }}</div>
                     </div>
-                    <Button type="submit">Add income</Button>
+                    <Button type="submit" :disabled="form.processing">Add income</Button>
                 </form>
                 <br />
+
+                <Table>
+                    <TableCaption>A list of your recent invoices.</TableCaption>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead class="w-[100px]">
+                                Invoice
+                            </TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Method</TableHead>
+                            <TableHead class="text-right">
+                                Amount
+                            </TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell class="font-medium">
+                                INV001
+                            </TableCell>
+                            <TableCell>Paid</TableCell>
+                            <TableCell>Credit Card</TableCell>
+                            <TableCell class="text-right">
+                                $250.00
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
             </div>
         </div>
     </AppLayout>
@@ -75,7 +132,7 @@ const handleSubmit = () => {
 
 
 <!-- FORM -->
-                <!-- 
+<!-- 
 import { toTypedSchema } from "@vee-validate/zod"
 import { h } from "vue"
 import * as z from "zod"
@@ -163,4 +220,4 @@ function onSubmit(values: any) {
                         </DialogContent>
                     </Dialog>
                 </Form> -->
-                <!-- FORM -->
+<!-- FORM -->

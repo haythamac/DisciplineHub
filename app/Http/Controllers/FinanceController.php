@@ -10,6 +10,7 @@ class FinanceController extends Controller
 {
     public function index()
     {
+        $data = Finance::get();
         return Inertia::render('finance/index');
     }
 
@@ -24,6 +25,5 @@ class FinanceController extends Controller
 
         return redirect()->route('finance.index')->with('message', 'Finance added successfully');
 
-        // 37:59
     }
 }
